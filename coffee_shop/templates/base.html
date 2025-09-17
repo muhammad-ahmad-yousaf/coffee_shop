@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            Coffee Shop
+        {% endblock %}
+    </title>
+</head>
+
+<body>
+    <header>
+        <h1>Coffee Shop</h1>
+        <nav>
+
+            {% if user.is_authenticated %}
+                <span>Welcome {{ user.username }}</span>
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        {% block content %}
+
+        {% endblock %}
+    </main>
+</body>
+
+</html>
