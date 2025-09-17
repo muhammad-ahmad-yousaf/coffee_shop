@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Menu{% endblock %}
+
+{% block content %}
+<h2>Menu</h2>
+
+<form method="get" action=".">
+    <label for="category">Filter by category:</label>
+    <select name="category" id="category" onchange="this.form.submit()">
+        <option value="" {% if request.GET.category == "" %}selected{% endif %}>All</option>
+        <option value="coffee"{% if request.GET.category == "coffee" %}selected{% endif %}>Coffee</option>
+        <option value="pastry" {% if request.GET.category == "pastry" %}selected{% endif %}>Pastry</option>
+        <option value="drink" {% if request.GET.category == "drink" %}selected{% endif %}>Drink</option>
+        <option value="other" {% if request.GET.category == "other" %}selected{% endif %}>Other</option>
+    </select>
+</form>
+
+<ul>
+    {% for item in items %}
+        <li>
+            <strong>{{ item.name }}</strong> - Rs: {{ item.price }} <br>
+            <em>{{ item.get_category_display }}</em><br>
+            {{ item.description }}
+        </li>
+    {% empty %}
+        <li>No items available.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
