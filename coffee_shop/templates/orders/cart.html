@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+<h2>Your Cart</h2>
+<ul>
+    {% for item in cart %}
+        <li>
+            {{ item.item.name }} - ${{ item.item.price }} x {{ item.quantity }}
+            = ${{ item.total_price }}
+            <a href="{% url 'remove-from-cart' item.item.id %}">Remove</a>
+        </li>
+    {% empty %}
+        <li>Your cart is empty.</li>
+    {% endfor %}
+</ul>
+<p><strong>Total:</strong> ${{ cart.get_total_price }}</p>
+
+{% if cart.cart %}
+    <a href="{% url 'place-order' %}">Place Order</a>
+{% endif %}
+{% endblock %}
