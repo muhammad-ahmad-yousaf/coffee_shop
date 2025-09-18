@@ -19,6 +19,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
 from menu.views import menu_list
+from orders import views as order_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +30,10 @@ urlpatterns = [
     path("welcome/", views.welcome_view, name="welcome"),
 
     path("menu/", menu_list, name="menu-list"),
+
+    path("cart/", order_views.view_cart, name="view-cart"),
+    path("cart/add/<int:item_id>/", order_views.add_to_cart, name="add-to-cart"),
+    path("cart/remove/<int:item_id>/", order_views.remove_from_cart, name="remove-from-cart"),
+    path("order/place/", order_views.place_order, name="place-order"),
+    path("orders/history/", order_views.order_history, name="order-history"),
 ]
