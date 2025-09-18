@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>
         {% block title %}
-            Coffee Shop
+        Coffee Shop
         {% endblock %}
     </title>
 </head>
@@ -14,13 +14,15 @@
     <header>
         <h1>Coffee Shop</h1>
         <nav>
-
+            <a href="{% url 'menu-list' %}">Menu</a>
+            <a href="{% url 'view-cart' %}">My Cart</a>
             {% if user.is_authenticated %}
-                <span>Welcome {{ user.username }}</span>
+                <a href="{% url 'order-history' %}">Order History</a>
                 <form action="{% url 'logout' %}" method="post" style="display:inline;">
                     {% csrf_token %}
                     <button type="submit">Logout</button>
                 </form>
+                <div><span>Welcome {{ user.username }}</span></div>
             {% else %}
                 <a href="{% url 'login' %}">Login</a>
                 <a href="{% url 'register' %}">Register</a>
