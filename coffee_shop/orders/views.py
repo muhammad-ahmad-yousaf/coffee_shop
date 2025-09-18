@@ -29,12 +29,15 @@ def remove_from_cart(request, item_id):
 @login_required
 def view_cart(request):
     cart = Cart(request)
-    discounts = Discount.objects.filter(
-        is_active=True,
-        valid_from__lte=timezone.now(),
-        valid_to__gte=timezone.now()
-    )
-    return render(request, "orders/cart.html", {"cart": cart, "discounts": discounts})
+    discounts = Discount.objects.filter(is_active=True)
+
+    valid_discounts = []
+    for d in discounts:
+        if d.is_valid(request.user, cart.get_total_price(), {i["item"]: i["quantity"] for i in cart}):
+            valid_discounts.append(d)
+
+    return render(request, "orders/cart.html", {"cart": cart, "discounts": valid_discounts})
+
 
 
 @login_required
@@ -43,11 +46,15 @@ def place_order(request):
     if not cart.cart:
         return redirect("menu-list")
 
+    discount = cart.get_discount(user=request.user)
+    total_after, discount_amount = cart.get_total_after_discount()
+
     order = Order.objects.create(
         customer=request.user,
         total_before_discount=cart.get_total_price(),
-        discount_amount=0,
-        total_after_discount=cart.get_total_price(),
+        discount=discount,
+        discount_amount=discount_amount,
+        total_after_discount=total_after,
     )
 
     for item in cart:
