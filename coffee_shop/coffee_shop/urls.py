@@ -23,6 +23,7 @@ from orders import views as order_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("", menu_list),
 
     path("register/", views.register, name="register"),
     path("login/", auth_views.LoginView.as_view(template_name="auth/login.html"), name="login"),

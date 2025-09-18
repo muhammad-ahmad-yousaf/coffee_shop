@@ -6,8 +6,8 @@
 <ul>
     {% for item in cart %}
         <li>
-            {{ item.item.name }} - ${{ item.item.price }} x {{ item.quantity }}
-            = ${{ item.total_price }}
+            {{ item.item.name }} - Rs: {{ item.item.price }} x {{ item.quantity }}
+            = Rs: {{ item.total_price }}
             <a href="{% url 'remove-from-cart' item.item.id %}">Remove</a>
         </li>
     {% empty %}
@@ -15,16 +15,16 @@
     {% endfor %}
 </ul>
 
-<p><strong>Total before discount:</strong> ${{ cart.get_total_price }}</p>
+<p><strong>Total before discount:</strong> Rs: {{ cart.get_total_price }}</p>
 
 {% if cart.get_discount %}
-    <p><strong>Discount:</strong> {{ cart.get_discount.name }} (-${{ cart.get_total_price|floatformat:2 }})</p>
+    <p><strong>Discount:</strong> {{ cart.get_discount.name }} -Rs: {{ cart.get_total_after_discount.1 |floatformat:2}}</p>
 {% endif %}
 
 <p><strong>Total after discount:</strong> 
-    {% with total=cart.get_total_after_discount %}
-        ${{ total.0 }}
-    {% endwith %}
+{% with total=cart.get_total_after_discount %}
+    Rs: {{ total.0 |floatformat:2}}
+{% endwith %}
 </p>
 
 <h3>Available Discounts</h3>
