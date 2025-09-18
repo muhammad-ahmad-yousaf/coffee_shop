@@ -3,6 +3,16 @@ from menu.models import MenuItem
 from .models import Order, OrderItem
 from .cart import Cart
 from django.contrib.auth.decorators import login_required
+from discounts.models import Discount
+from django.utils import timezone
+
+
+@login_required
+def apply_discount(request, discount_id):
+    cart = Cart(request)
+    discount = get_object_or_404(Discount, id=discount_id, is_active=True)
+    cart.apply_discount(discount)
+    return redirect("view-cart")
 
 @login_required
 def add_to_cart(request, item_id):
@@ -19,7 +29,13 @@ def remove_from_cart(request, item_id):
 @login_required
 def view_cart(request):
     cart = Cart(request)
-    return render(request, "orders/cart.html", {"cart": cart})
+    discounts = Discount.objects.filter(
+        is_active=True,
+        valid_from__lte=timezone.now(),
+        valid_to__gte=timezone.now()
+    )
+    return render(request, "orders/cart.html", {"cart": cart, "discounts": discounts})
+
 
 @login_required
 def place_order(request):
@@ -30,7 +46,7 @@ def place_order(request):
     order = Order.objects.create(
         customer=request.user,
         total_before_discount=cart.get_total_price(),
-        discount_amount=0,  # discount logic comes later
+        discount_amount=0,
         total_after_discount=cart.get_total_price(),
     )
 

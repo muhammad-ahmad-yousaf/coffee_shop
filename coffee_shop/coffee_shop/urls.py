@@ -36,4 +36,6 @@ urlpatterns = [
     path("cart/remove/<int:item_id>/", order_views.remove_from_cart, name="remove-from-cart"),
     path("order/place/", order_views.place_order, name="place-order"),
     path("orders/history/", order_views.order_history, name="order-history"),
+    path("cart/apply/<int:discount_id>/", order_views.apply_discount, name="apply-discount"),
+
 ]
