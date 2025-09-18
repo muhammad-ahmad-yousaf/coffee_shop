@@ -8,23 +8,23 @@
     {% for order in orders %}
         <li>
             <strong>Order #{{ order.id }}</strong>  
-            Date: {{ order.order_date|date:"Y-m-d H:i" }}  
-            Status: {{ order.status|title }} <br>
+            Date: {{ order.order_date|date:"Y-m-d H:i" }} 
+            <strong>Status:</strong> {{ order.status|title }} <br>
 
             <ul>
                 {% for item in order.items.all %}
-                    <li>{{ item.quantity }} x {{ item.menu_item.name }} (${{ item.price }})</li>
+                    <li>{{ item.quantity }} x {{ item.menu_item.name }} (Rs: {{ item.price }})</li>
                 {% endfor %}
             </ul>
 
-            <p><strong>Total Before Discount:</strong> ${{ order.total_before_discount }}</p>
+            <p><strong>Total Before Discount:</strong> Rs: {{ order.total_before_discount }}</p>
             
             {% if order.discount %}
                 <p><strong>Discount Applied:</strong> {{ order.discount.name }}  
-                (-${{ order.discount_amount }})</p>
+                (-Rs: {{ order.discount_amount }})</p>
             {% endif %}
 
-            <p><strong>Total After Discount:</strong> ${{ order.total_after_discount }}</p>
+            <p><strong>Total After Discount:</strong> Rs: {{ order.total_after_discount }}</p>
         </li>
         <hr>
     {% empty %}
