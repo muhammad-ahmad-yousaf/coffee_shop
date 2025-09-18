@@ -14,7 +14,30 @@
         <li>Your cart is empty.</li>
     {% endfor %}
 </ul>
-<p><strong>Total:</strong> ${{ cart.get_total_price }}</p>
+
+<p><strong>Total before discount:</strong> ${{ cart.get_total_price }}</p>
+
+{% if cart.get_discount %}
+    <p><strong>Discount:</strong> {{ cart.get_discount.name }} (-${{ cart.get_total_price|floatformat:2 }})</p>
+{% endif %}
+
+<p><strong>Total after discount:</strong> 
+    {% with total=cart.get_total_after_discount %}
+        ${{ total.0 }}
+    {% endwith %}
+</p>
+
+<h3>Available Discounts</h3>
+<ul>
+    {% for discount in discounts %}
+        <li>
+            {{ discount.name }} - {{ discount.description }}
+            <a href="{% url 'apply-discount' discount.id %}">Apply</a>
+        </li>
+    {% empty %}
+        <li>No discounts available.</li>
+    {% endfor %}
+</ul>
 
 {% if cart.cart %}
     <a href="{% url 'place-order' %}">Place Order</a>
