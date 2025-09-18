@@ -3,13 +3,30 @@
 
 {% block content %}
 <h2>Your Orders</h2>
+
 <ul>
     {% for order in orders %}
         <li>
-            Order #{{ order.id }} - {{ order.order_date }} - 
-            Status: {{ order.status }} <br>
-            Total: ${{ order.total_after_discount }}
+            <strong>Order #{{ order.id }}</strong>  
+            Date: {{ order.order_date|date:"Y-m-d H:i" }}  
+            Status: {{ order.status|title }} <br>
+
+            <ul>
+                {% for item in order.items.all %}
+                    <li>{{ item.quantity }} x {{ item.menu_item.name }} (${{ item.price }})</li>
+                {% endfor %}
+            </ul>
+
+            <p><strong>Total Before Discount:</strong> ${{ order.total_before_discount }}</p>
+            
+            {% if order.discount %}
+                <p><strong>Discount Applied:</strong> {{ order.discount.name }}  
+                (-${{ order.discount_amount }})</p>
+            {% endif %}
+
+            <p><strong>Total After Discount:</strong> ${{ order.total_after_discount }}</p>
         </li>
+        <hr>
     {% empty %}
         <li>No past orders.</li>
     {% endfor %}
