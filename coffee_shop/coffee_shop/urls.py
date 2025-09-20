@@ -20,6 +20,8 @@ from django.contrib.auth import views as auth_views
 from . import views
 from menu.views import menu_list
 from orders import views as order_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,8 +30,6 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("login/", auth_views.LoginView.as_view(template_name="auth/login.html"), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
-    path("welcome/", views.welcome_view, name="welcome"),
-
     path("menu/", menu_list, name="menu-list"),
 
     path("cart/", order_views.view_cart, name="view-cart"),
@@ -40,3 +40,6 @@ urlpatterns = [
     path("cart/apply/<int:discount_id>/", order_views.apply_discount, name="apply-discount"),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
