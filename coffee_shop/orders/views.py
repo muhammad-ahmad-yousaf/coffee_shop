@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from discounts.models import Discount
 from django.utils import timezone
 from django.views.decorators.http import require_POST
+from django.contrib import messages
 
 
 
@@ -22,12 +23,14 @@ def add_to_cart(request, item_id):
     cart = Cart(request)
     quantity = int(request.POST.get("quantity", 1))
     cart.add(item_id, quantity)
+    messages.success(request, "Item added to cart successfully!")
     return redirect("view-cart")
 
 @login_required
 def remove_from_cart(request, item_id):
     cart = Cart(request)
     cart.remove(item_id)
+    messages.warning(request, "Item Deleted from cart!!!")
     return redirect("view-cart")
 
 @login_required
@@ -70,6 +73,7 @@ def place_order(request):
         )
 
     cart.clear()
+    messages.success(request, f"Your Order No. {order.id} is Placed successfully!")
     return redirect("order-history")
 
 @login_required
