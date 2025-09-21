@@ -5,6 +5,8 @@ from .cart import Cart
 from django.contrib.auth.decorators import login_required
 from discounts.models import Discount
 from django.utils import timezone
+from django.views.decorators.http import require_POST
+
 
 
 @login_required
@@ -14,10 +16,12 @@ def apply_discount(request, discount_id):
     cart.apply_discount(discount)
     return redirect("view-cart")
 
+@require_POST
 @login_required
 def add_to_cart(request, item_id):
     cart = Cart(request)
-    cart.add(item_id, quantity=1)
+    quantity = int(request.POST.get("quantity", 1))
+    cart.add(item_id, quantity)
     return redirect("view-cart")
 
 @login_required
