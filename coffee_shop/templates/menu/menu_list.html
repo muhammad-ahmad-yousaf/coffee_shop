@@ -3,32 +3,55 @@
 {% block title %}Menu{% endblock %}
 
 {% block content %}
-<h2>Menu</h2>
+<h2 class="mb-4">Menu</h2>
 
-<form method="get" action=".">
-    <label for="category">Filter by category:</label>
-    <select name="category" id="category" onchange="this.form.submit()">
-        <option value="" {% if request.GET.category == "" %}selected{% endif %}>All</option>
-        <option value="coffee"{% if request.GET.category == "coffee" %}selected{% endif %}>Coffee</option>
-        <option value="pastry" {% if request.GET.category == "pastry" %}selected{% endif %}>Pastry</option>
-        <option value="drink" {% if request.GET.category == "drink" %}selected{% endif %}>Drink</option>
-        <option value="other" {% if request.GET.category == "other" %}selected{% endif %}>Other</option>
-    </select>
+<!-- Category Filter -->
+<form method="get" action="." class="mb-4">
+    <div class="row g-2 align-items-center">
+        <div class="col-auto">
+            <label for="category" class="col-form-label">Filter by category:</label>
+        </div>
+        <div class="col-auto">
+            <select name="category" id="category" class="form-select" onchange="this.form.submit()">
+                <option value="" {% if request.GET.category == "" %}selected{% endif %}>All</option>
+                <option value="coffee" {% if request.GET.category == "coffee" %}selected{% endif %}>Coffee</option>
+                <option value="pastry" {% if request.GET.category == "pastry" %}selected{% endif %}>Pastry</option>
+                <option value="drink" {% if request.GET.category == "drink" %}selected{% endif %}>Drink</option>
+                <option value="other" {% if request.GET.category == "other" %}selected{% endif %}>Other</option>
+            </select>
+        </div>
+    </div>
 </form>
 
-<ul>
+<!-- Menu Items -->
+<div class="row">
     {% for item in items %}
-        <li>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm h-100">
             {% if item.image %}
-                <img src="{{ item.image.url }}" alt="{{ item.name }}" style="width:120px; height:auto;">
+                <!-- Fixed ratio box for image -->
+                <div class="ratio ratio-4x3">
+                    <img src="{{ item.image.url }}" class="card-img-top img-fluid"
+                         alt="{{ item.name }}" style="object-fit: cover;">
+                </div>
             {% endif %}
-            <strong>{{ item.name }}</strong> - Rs: {{ item.price }} <br>
-            <em>{{ item.get_category_display }}</em><br>
-            {{ item.description }}
-            <br><a href="{% url 'add-to-cart' item.id %}">Add to Cart</a><br><br>
-        </li>
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ item.name }}</h5>
+                <p class="card-text"><em>{{ item.get_category_display }}</em></p>
+                <p class="card-text">{{ item.description }}</p>
+                <p class="fw-bold">Rs: {{ item.price }}</p>
+                <div class="mt-auto">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'add-to-cart' item.id %}" class="btn btn-dark w-100">Add to Cart</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-secondary w-100">Login to add</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
     {% empty %}
-        <li>No items available.</li>
+    <p>No items available.</p>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}

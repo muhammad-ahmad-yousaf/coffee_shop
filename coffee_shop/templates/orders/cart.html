@@ -2,44 +2,71 @@
 {% block title %}Your Cart{% endblock %}
 
 {% block content %}
-<h2>Your Cart</h2>
-<ul>
-    {% for item in cart %}
-        <li>
-            {{ item.item.name }} - Rs: {{ item.item.price }} x {{ item.quantity }}
-            = Rs: {{ item.total_price }}
-            <a href="{% url 'remove-from-cart' item.item.id %}">Remove</a>
-        </li>
-    {% empty %}
-        <li>Your cart is empty.</li>
-    {% endfor %}
-</ul>
-
-<p><strong>Total before discount:</strong> Rs: {{ cart.get_total_price }}</p>
-
-{% if cart.get_discount %}
-    <p><strong>Discount:</strong> {{ cart.get_discount.name }} -Rs: {{ cart.get_total_after_discount.1 |floatformat:2}}</p>
-{% endif %}
-
-<p><strong>Total after discount:</strong> 
-{% with total=cart.get_total_after_discount %}
-    Rs: {{ total.0 |floatformat:2}}
-{% endwith %}
-</p>
-
-<h3>Available Discounts</h3>
-<ul>
-    {% for discount in discounts %}
-        <li>
-            {{ discount.name }} - {{ discount.description }}
-            <a href="{% url 'apply-discount' discount.id %}">Apply</a>
-        </li>
-    {% empty %}
-        <li>No discounts available.</li>
-    {% endfor %}
-</ul>
+<h2 class="mb-4">Your Cart</h2>
 
 {% if cart.cart %}
-    <a href="{% url 'place-order' %}">Place Order</a>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart %}
+            <tr>
+                <td>{{ item.item.name }}</td>
+                <td>Rs: {{ item.item.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>Rs: {{ item.total_price }}</td>
+                <td>
+                    <a href="{% url 'remove-from-cart' item.item.id %}" class="btn btn-sm btn-danger">
+                        Remove
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="mb-3">
+        <p><strong>Total before discount:</strong> Rs: {{ cart.get_total_price }}</p>
+
+        {% if cart.get_discount %}
+            <p><strong>Discount:</strong> {{ cart.get_discount.name }} -
+                Rs: {{ cart.get_total_after_discount.1|floatformat:2 }}
+            </p>
+        {% endif %}
+
+        <p class="fw-bold">
+            <strong>Total after discount:</strong>
+            {% with total=cart.get_total_after_discount %}
+                Rs: {{ total.0|floatformat:2 }}
+            {% endwith %}
+        </p>
+    </div>
+
+    <h3 class="mt-4">Available Discounts</h3>
+    <ul class="list-group mb-3">
+        {% for discount in discounts %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ discount.name }}</strong><br>
+                    <small class="text-muted">{{ discount.description }}</small>
+                </div>
+                <a href="{% url 'apply-discount' discount.id %}" class="btn btn-sm btn-success">Apply</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No discounts available.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'place-order' %}" class="btn btn-dark">Place Order</a>
+
+{% else %}
+    <div class="alert alert-info">Your cart is empty.</div>
 {% endif %}
 {% endblock %}
