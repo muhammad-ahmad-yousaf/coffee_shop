@@ -13,9 +13,9 @@ class Order(models.Model):
         on_delete=models.CASCADE,
         related_name="orders"
     )
-    total_before_discount = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
+    total_before_discount = models.DecimalField(max_digits=10, decimal_places=2, blank=False, default=0)
     discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    total_after_discount = models.DecimalField(max_digits=10, decimal_places=2)
+    total_after_discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     order_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
     discount = models.ForeignKey("discounts.Discount", on_delete=models.SET_NULL, null=True, blank=True)
