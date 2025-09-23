@@ -7,6 +7,7 @@ from discounts.models import Discount
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 
 
@@ -78,5 +79,8 @@ def place_order(request):
 
 @login_required
 def order_history(request):
-    orders = Order.objects.filter(customer=request.user).order_by("-order_date")
-    return render(request, "orders/order_history.html", {"orders": orders})
+    orders = Order.objects.filter(customer=request.user).order_by("-order_date")  
+    paginator = Paginator(orders, 5) 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, "orders/order_history.html", {"orders": page_obj})
