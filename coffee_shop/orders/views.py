@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from menu.models import MenuItem
 from .models import Order, OrderItem
-from .cart import Cart
+from .services.cart_service import CartService
 from django.contrib.auth.decorators import login_required
 from discounts.models import Discount
 from django.utils import timezone
@@ -12,7 +12,7 @@ from django.contrib import messages
 
 @login_required
 def apply_discount(request, discount_id):
-    cart = Cart(request)
+    cart = CartService(request)
     discount = get_object_or_404(Discount, id=discount_id, is_active=True)
     cart.apply_discount(discount)
     return redirect("view-cart")
@@ -20,7 +20,7 @@ def apply_discount(request, discount_id):
 @require_POST
 @login_required
 def add_to_cart(request, item_id):
-    cart = Cart(request)
+    cart = CartService(request)
     quantity = int(request.POST.get("quantity", 1))
     cart.add(item_id, quantity)
     messages.success(request, "Item added to cart successfully!")
@@ -28,14 +28,14 @@ def add_to_cart(request, item_id):
 
 @login_required
 def remove_from_cart(request, item_id):
-    cart = Cart(request)
+    cart = CartService(request)
     cart.remove(item_id)
     messages.warning(request, "Item Deleted from cart!!!")
     return redirect("view-cart")
 
 @login_required
 def view_cart(request):
-    cart = Cart(request)
+    cart = CartService(request)
     discounts = Discount.objects.filter(is_active=True)
 
     valid_discounts = []
@@ -49,7 +49,7 @@ def view_cart(request):
 
 @login_required
 def place_order(request):
-    cart = Cart(request)
+    cart = CartService(request)
     if not cart.cart:
         return redirect("menu-list")
 
