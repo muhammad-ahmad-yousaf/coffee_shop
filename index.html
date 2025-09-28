@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coffee Delight</title>
+  <meta name="description" content="Coffee Delight - warm, cozy coffee shop" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind custom colors
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            mocha: '#6B4F3E',
+            cream: '#F5EDE3',
+            gold: '#C9A34B'
+          },
+          keyframes: {
+            float: {
+              '0%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-6px)' },
+              '100%': { transform: 'translateY(0px)' }
+            },
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            }
+          },
+          animation: {
+            float: 'float 4s ease-in-out infinite',
+            fadeInUp: 'fadeInUp 0.7s ease forwards'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* simple base for smooth fonts and dark-mode friendly background transition */
+    :root { color-scheme: light dark; }
+    html { transition: background-color 300ms ease, color 300ms ease; }
+    .placeholder-img { background: linear-gradient(135deg,#e9dcca,#efe7df); }
+    /* subtle focus ring for accessibility */
+    .focus-ring:focus { outline: 3px solid rgba(201,163,75,0.25); outline-offset: 2px; }
+  </style>
+</head>
+<body class="bg-cream text-mocha dark:bg-[#1b1b1b] dark:text-gray-200 font-sans leading-relaxed">
+
+  <!-- sticky navbar -->
+  <header class="sticky top-0 z-50 backdrop-blur-sm bg-white/60 dark:bg-gray-900/60 border-b border-white/20 dark:border-gray-800 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-16">
+        <a href="#home" class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-[linear-gradient(135deg,#6B4F3E,#C9A34B)] flex items-center justify-center text-cream font-semibold shadow-sm">CD</div>
+          <span class="text-lg tracking-wide">Coffee Delight</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-6 text-sm">
+          <a href="#home" class="hover:text-gold transition">Home</a>
+          <a href="#features" class="hover:text-gold transition">Features</a>
+          <a href="#about" class="hover:text-gold transition">About</a>
+          <a href="#menu" class="hover:text-gold transition">Menu</a>
+          <a href="#contact" class="hover:text-gold transition">Contact</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <button id="darkToggle" aria-label="Toggle dark mode" class="p-2 rounded-md focus-ring">
+            <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293A8 8 0 116.707 2.707 7 7 0 0017.293 13.293z" /></svg>
+          </button>
+
+          <button id="menuBtn" class="md:hidden p-2 focus-ring" aria-label="Open menu">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" /></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- mobile menu -->
+    <div id="mobileMenu" class="md:hidden hidden border-t border-white/10">
+      <div class="px-4 py-3 flex flex-col gap-2">
+        <a href="#home" class="py-2">Home</a>
+        <a href="#features" class="py-2">Features</a>
+        <a href="#about" class="py-2">About</a>
+        <a href="#menu" class="py-2">Menu</a>
+        <a href="#contact" class="py-2">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="home">
+
+    <!-- Hero -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div class="space-y-6 animate-fadeInUp">
+        <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight">Wake up your senses at Coffee Delight</h1>
+        <p class="text-lg max-w-xl">hand-roasted beans, warm smiles, and a cozy corner — the perfect daily ritual. sip, relax, repeat.</p>
+        <div class="flex items-center gap-4">
+          <a href="#menu" class="inline-block px-6 py-3 rounded-full bg-mocha text-cream shadow hover:scale-105 transform transition">See the menu</a>
+          <a href="#contact" class="inline-block px-5 py-3 rounded-full border border-mocha hover:bg-mocha/5 transition">Book a table</a>
+        </div>
+
+        <div class="flex gap-4 mt-4 text-sm text-gray-600 dark:text-gray-300">
+          <div class="flex items-center gap-2"><svg class="h-5 w-5 text-gold" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a6 6 0 00-6 6v3h12V8a6 6 0 00-6-6z"/></svg> Freshly roasted beans</div>
+          <div class="flex items-center gap-2"><svg class="h-5 w-5 text-gold" fill="currentColor" viewBox="0 0 20 20"><path d="M9 12V2L3 6v6a2 2 0 002 2h2"/></svg> Cozy ambience</div>
+        </div>
+      </div>
+
+      <div class="relative">
+        <div class="w-full h-80 md:h-96 rounded-2xl overflow-hidden shadow-lg transform hover:scale-102 transition duration-500 animate-float">
+          <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Cup of coffee" class="w-full h-full object-cover" />
+        </div>
+        <div class="absolute -bottom-6 right-4 bg-cream dark:bg-gray-800 rounded-xl p-3 shadow-lg border border-white/20">
+          <div class="text-xs uppercase text-gray-500">Special</div>
+          <div class="font-semibold">Caramel Mocha — limited</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="bg-white/40 dark:bg-gray-800/40 py-12">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <h2 class="text-2xl font-semibold mb-6">what we offer</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+
+          <article class="p-6 rounded-xl bg-cream/80 dark:bg-gray-700/40 hover:shadow-xl transition animate-fadeInUp">
+            <div class="text-3xl mb-3">☕</div>
+            <h3 class="font-semibold">Fresh beans</h3>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">Sourced from small farms and roasted weekly to bring out rich, balanced flavors.</p>
+          </article>
+
+          <article class="p-6 rounded-xl bg-cream/80 dark:bg-gray-700/40 hover:shadow-xl transition animate-fadeInUp" style="animation-delay:100ms">
+            <div class="text-3xl mb-3">🪵</div>
+            <h3 class="font-semibold">Cozy ambience</h3>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">A warm space to work, chat, or unwind — comfy chairs, soft lighting, and quiet corners.</p>
+          </article>
+
+          <article class="p-6 rounded-xl bg-cream/80 dark:bg-gray-700/40 hover:shadow-xl transition animate-fadeInUp" style="animation-delay:200ms">
+            <div class="text-3xl mb-3">🙂</div>
+            <h3 class="font-semibold">Friendly baristas</h3>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">Expertly trained and always ready with a smile to help you find your perfect cup.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      <h2 class="text-2xl font-semibold mb-4">our story</h2>
+      <p class="text-gray-700 dark:text-gray-300">Coffee Delight started as a small idea between two friends who loved the ritual of coffee. they wanted a place that felt like home — warm light, friendly faces, and beans roasted with care. today we craft each cup by hand, focusing on flavor, community, and comfort. whether you're popping in for a quick espresso or settling in with a book, welcome — we saved a seat for you.</p>
+    </section>
+
+    <!-- Menu -->
+    <section id="menu" class="bg-white/40 dark:bg-gray-800/40 py-12">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <h2 class="text-2xl font-semibold mb-8">menu highlights</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <!-- Item 1 -->
+          <div class="rounded-xl overflow-hidden bg-cream dark:bg-gray-700/40 shadow hover:scale-102 transition">
+            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Espresso" class="w-full h-40 object-cover" />
+            <div class="p-4">
+              <h3 class="font-semibold">Classic Espresso</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300">Bold, concentrated, and perfect for lovers of pure coffee.</p>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="rounded-xl overflow-hidden bg-cream dark:bg-gray-700/40 shadow hover:scale-102 transition">
+            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Latte" class="w-full h-40 object-cover" />
+            <div class="p-4">
+              <h3 class="font-semibold">Velvet Latte</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300">Creamy steamed milk over smooth espresso with a delicate foam crown.</p>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="rounded-xl overflow-hidden bg-cream dark:bg-gray-700/40 shadow hover:scale-102 transition">
+            <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Cappuccino" class="w-full h-40 object-cover" />
+            <div class="p-4">
+              <h3 class="font-semibold">Silky Cappuccino</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300">A balanced shot with equal parts espresso, steamed milk, and foam.</p>
+            </div>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="rounded-xl overflow-hidden bg-cream dark:bg-gray-700/40 shadow hover:scale-102 transition">
+            <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Caramel Mocha" class="w-full h-40 object-cover" />
+            <div class="p-4">
+              <h3 class="font-semibold">Caramel Mocha</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300">Espresso sweetened with caramel, topped with whipped cream and a drizzle.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+      <h2 class="text-2xl font-semibold mb-4">Get in touch</h2>
+      <p class="text-gray-600 dark:text-gray-300 mb-6">Have a question, feedback, or want to book a table? send us a message.</p>
+
+      <form id="contactForm" class="bg-cream/90 dark:bg-gray-700/40 p-6 rounded-xl shadow space-y-4" onsubmit="handleSubmit(event)">
+        <div>
+          <label class="block text-sm">Name</label>
+          <input required name="name" class="mt-1 w-full p-3 rounded-md border border-white/20 focus-ring bg-transparent" placeholder="Your name" />
+        </div>
+        <div>
+          <label class="block text-sm">Email</label>
+          <input required type="email" name="email" class="mt-1 w-full p-3 rounded-md border border-white/20 focus-ring bg-transparent" placeholder="you@example.com" />
+        </div>
+        <div>
+          <label class="block text-sm">Message</label>
+          <textarea required name="message" rows="4" class="mt-1 w-full p-3 rounded-md border border-white/20 focus-ring bg-transparent" placeholder="Write your message..."></textarea>
+        </div>
+        <div class="flex items-center justify-between">
+          <button type="submit" class="px-5 py-3 rounded-full bg-mocha text-cream shadow hover:opacity-95">Send message</button>
+          <div id="formStatus" class="text-sm text-gray-600 dark:text-gray-300"></div>
+        </div>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 py-6 mt-12 bg-white/40 dark:bg-gray-900/40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 text-sm flex flex-col md:flex-row items-center justify-between gap-3">
+      <div>© <span id="year"></span> Coffee Delight. All rights reserved.</div>
+      <div class="text-xs text-gray-600 dark:text-gray-400">Designed with warmth • mocha, cream & gold</div>
+    </div>
+  </footer>
+
+  <script>
+    // small helper utilities
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuBtn = document.getElementById('menuBtn');
+    menuBtn?.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
+
+    // smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          mobileMenu.classList.add('hidden');
+        }
+      });
+    });
+
+    // dark mode toggle
+    const darkToggle = document.getElementById('darkToggle');
+    const root = document.documentElement;
+    const stored = localStorage.getItem('coffee-delight-theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (stored === 'dark' || (!stored && prefersDark)) root.classList.add('dark');
+
+    darkToggle.addEventListener('click', () => {
+      root.classList.toggle('dark');
+      localStorage.setItem('coffee-delight-theme', root.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // form submit (placeholder behaviour)
+    function handleSubmit(e){
+      e.preventDefault();
+      const status = document.getElementById('formStatus');
+      status.textContent = 'sending...';
+      // simulate send
+      setTimeout(()=>{ status.textContent = 'Thanks — we will reply soon!'; e.target.reset(); }, 900);
+    }
+
+    // year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
