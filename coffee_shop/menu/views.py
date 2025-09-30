@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import MenuItem
 
+
+
 def menu_list(request):
     category = request.GET.get("category")
     if category:
