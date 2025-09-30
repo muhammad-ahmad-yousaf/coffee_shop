@@ -1,6 +1,8 @@
 from django.db import models
+from core.models import BaseModel
+from django.utils import timezone
 
-class Discount(models.Model):
+class Discount(BaseModel):
     DISCOUNT_TYPES = [
         ("percentage", "Percentage"),
         ("fixed", "Fixed Amount"),
@@ -21,3 +23,32 @@ class Discount(models.Model):
 
     def __str__(self):
         return self.name
+
+
+    def is_valid(self, user, cart_total, cart_items_count):
+        if not self.is_active:
+            return False
+
+        now = timezone.now()
+        if self.valid_from > now or self.valid_to < now:
+            return False
+
+        if self.min_order_value and cart_total < self.min_order_value:
+            return False
+
+        if self.max_uses is not None:
+            used_count = self.order_set.count()
+            if used_count >= self.max_uses:
+                return False
+
+        if self.max_uses_per_customer is not None:
+            used_by_user = self.order_set.filter(customer=user).count()
+            if used_by_user >= self.max_uses_per_customer:
+                return False
+
+        if self.type == "item_specific":
+            required_items = self.specific_items.all()
+            if not required_items.intersection(cart_items_count.keys()):
+                return False
+
+        return True

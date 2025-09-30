@@ -12,6 +12,3 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, "auth/register.html", {"form": form})
-
-def welcome_view(request):
-    return render(request, "welcome.html")

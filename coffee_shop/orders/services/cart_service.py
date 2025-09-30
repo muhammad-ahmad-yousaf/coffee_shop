@@ -3,7 +3,7 @@ from menu.models import MenuItem
 from discounts.models import Discount
 from django.utils import timezone
 
-class Cart:
+class CartService:
     def __init__(self, request):
         self.session = request.session
         cart = self.session.get("cart")
@@ -48,17 +48,15 @@ class Cart:
     def apply_discount(self, discount):
         self.session["discount_id"] = discount.id
         self.save()
-
-    def get_discount(self):
+    def get_discount(self, user=None):
         if self.discount_id:
             try:
-                discount = Discount.objects.get(
-                    id=self.discount_id,
-                    is_active=True,
-                    valid_from__lte=timezone.now(),
-                    valid_to__gte=timezone.now(),
-                )
-                return discount
+                discount = Discount.objects.get(id=self.discount_id)
+                cart_total = self.get_total_price()
+                cart_items_count = {item["item"]: item["quantity"] for item in self.__iter__()}
+                
+                if discount.is_valid(user, cart_total, cart_items_count):
+                    return discount
             except Discount.DoesNotExist:
                 return None
         return None
