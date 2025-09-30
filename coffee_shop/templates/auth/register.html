@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-sm" style="width: 400px;">
+        <div class="card-body">
+            <h3 class="text-center mb-4">Register</h3>
+
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-dark">Register</button>
+                </div>
+            </form>
+
+            <p class="text-center mt-3 mb-0">
+                <a href="{% url 'login' %}">Already have an account? Login</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
