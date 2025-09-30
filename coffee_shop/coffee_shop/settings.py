@@ -33,9 +33,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^pomok@--!guw!m&w1c=hu0lui#(s5)j@v4%aq()r%_vtujsn@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+DEBUG = True
 
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "/menu/"
@@ -54,6 +52,7 @@ INSTALLED_APPS = [
     'orders',
     'menu',
     'discounts',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -91,8 +90,12 @@ WSGI_APPLICATION = 'coffee_shop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'coffee_shop_db',     
+        'USER': 'admin',        
+        'PASSWORD': 'startnow',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
