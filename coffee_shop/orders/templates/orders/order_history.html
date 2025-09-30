@@ -32,14 +32,14 @@
                 {% endfor %}
             </ul>
 
-            <p><strong>Total Before Discount:</strong> Rs: {{ order.total_before_discount }}</p>
+            <p><strong>Total Before Discount:</strong> Rs: {{ order.total_before_discount|default:"0.00"}}</p>
             
             {% if order.discount %}
                 <p><strong>Discount Applied:</strong> {{ order.discount.name }}  
                 (-Rs: {{ order.discount_amount }})</p>
             {% endif %}
 
-            <p class="fw-bold"><strong>Total After Discount:</strong> Rs: {{ order.total_after_discount }}</p>
+            <p class="fw-bold"><strong>Total After Discount:</strong> Rs: {{ order.total_after_discount|default:"0.00" }}</p>
         </div>
         {% endfor %}
     </div>
