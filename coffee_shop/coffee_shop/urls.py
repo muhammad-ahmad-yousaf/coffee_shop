@@ -18,26 +18,34 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
-from menu.views import menu_list
 from orders import views as order_views
 from django.conf import settings
 from django.conf.urls.static import static
+from menu.views import MenuListView
+from orders.views import (
+    ApplyDiscountView,
+    AddToCartView,
+    RemoveFromCartView,
+    ViewCartView,
+    PlaceOrderView,
+    OrderHistoryView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", menu_list),
+    path("", MenuListView.as_view()),
 
     path("register/", views.register, name="register"),
     path("login/", auth_views.LoginView.as_view(template_name="auth/login.html"), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
-    path("menu/", menu_list, name="menu-list"),
+    path("menu/", MenuListView.as_view(), name="menu-list"),
 
-    path("cart/", order_views.view_cart, name="view-cart"),
-    path("cart/add/<int:item_id>/", order_views.add_to_cart, name="add-to-cart"),
-    path("cart/remove/<int:item_id>/", order_views.remove_from_cart, name="remove-from-cart"),
-    path("order/place/", order_views.place_order, name="place-order"),
-    path("orders/history/", order_views.order_history, name="order-history"),
-    path("cart/apply/<int:discount_id>/", order_views.apply_discount, name="apply-discount"),
+    path("cart/", ViewCartView.as_view(), name="view-cart"),
+    path("cart/add/<int:item_id>/", AddToCartView.as_view(), name="add-to-cart"),
+    path("cart/remove/<int:item_id>/", RemoveFromCartView.as_view(), name="remove-from-cart"),
+    path("cart/apply-discount/<int:discount_id>/", ApplyDiscountView.as_view(), name="apply-discount"),
+    path("order/place/", PlaceOrderView.as_view(), name="place-order"),
+    path("orders/history/", OrderHistoryView.as_view(), name="order-history"),
 
 ]
 
