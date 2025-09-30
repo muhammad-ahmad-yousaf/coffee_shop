@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Order History{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Your Orders</h2>
+
+{% if orders %}
+    <div class="list-group">
+        {% for order in orders %}
+        <div class="list-group-item mb-3 shadow-sm rounded">
+            <div class="d-flex justify-content-between">
+                <h5 class="mb-1">Order #{{ order.id }}</h5>
+                <small class="text-muted">{{ order.order_date|date:"Y-m-d H:i" }}</small>
+            </div>
+            <p class="mb-1">
+                <strong>Status:</strong>
+                <span class="badge 
+                    {% if order.status == 'completed' %}bg-success
+                    {% elif order.status == 'pending' %}bg-warning text-dark
+                    {% elif order.status == 'canceled' %}bg-danger
+                    {% else %}bg-secondary{% endif %}">
+                    {{ order.status|title }}
+                </span>
+            </p>
+
+            <ul class="list-group mb-3">
+                {% for item in order.items.all %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>{{ item.quantity }} x {{ item.menu_item.name }}</span>
+                        <span>Rs: {{ item.price }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <p><strong>Total Before Discount:</strong> Rs: {{ order.total_before_discount|default:"0.00"}}</p>
+            
+            {% if order.discount %}
+                <p><strong>Discount Applied:</strong> {{ order.discount.name }}  
+                (-Rs: {{ order.discount_amount }})</p>
+            {% endif %}
+
+            <p class="fw-bold"><strong>Total After Discount:</strong> Rs: {{ order.total_after_discount|default:"0.00" }}</p>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">No past orders.</div>
+{% endif %}
+{% endblock %}

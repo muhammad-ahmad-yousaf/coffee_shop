@@ -1,7 +1,8 @@
 from django.db import models
+from core.models import BaseModel
 from django.utils import timezone
 
-class Discount(models.Model):
+class Discount(BaseModel):
     DISCOUNT_TYPES = [
         ("percentage", "Percentage"),
         ("fixed", "Fixed Amount"),
