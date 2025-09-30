@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'orders',
     'menu',
     'discounts',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -89,8 +90,12 @@ WSGI_APPLICATION = 'coffee_shop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'coffee_shop_db',     
+        'USER': 'admin',        
+        'PASSWORD': 'startnow',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

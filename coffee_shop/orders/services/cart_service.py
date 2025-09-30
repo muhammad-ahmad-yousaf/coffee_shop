@@ -3,7 +3,7 @@ from menu.models import MenuItem
 from discounts.models import Discount
 from django.utils import timezone
 
-class Cart:
+class CartService:
     def __init__(self, request):
         self.session = request.session
         cart = self.session.get("cart")

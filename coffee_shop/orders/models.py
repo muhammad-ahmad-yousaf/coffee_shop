@@ -1,7 +1,8 @@
 from django.db import models
 from django.conf import settings
+from core.models import BaseModel
 
-class Order(models.Model):
+class Order(BaseModel):
     STATUS_CHOICES = [
         ("pending", "Pending"),
         ("paid", "Paid"),
@@ -25,7 +26,7 @@ class Order(models.Model):
         return f"Order {self.id} by {self.customer.username}"
 
 
-class OrderItem(models.Model):
+class OrderItem(BaseModel):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     menu_item = models.ForeignKey("menu.MenuItem", on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
