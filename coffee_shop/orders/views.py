@@ -10,6 +10,8 @@ from menu.models import MenuItem
 from .models import Order, OrderItem
 from .services.cart_service import CartService
 from discounts.models import Discount
+import requests
+from django.conf import settings
 
 class ApplyDiscountView(LoginRequiredMixin, View):
     def get(self, request, discount_id):
@@ -66,6 +68,7 @@ class PlaceOrderView(LoginRequiredMixin, View):
             total_after_discount=total_after,
         )
 
+        line_items = []
         for item in cart:
             OrderItem.objects.create(
                 order=order,
@@ -73,6 +76,42 @@ class PlaceOrderView(LoginRequiredMixin, View):
                 quantity=item["quantity"],
                 price=item["item"].price,
             )
+
+            line_items.append({
+                "name": item["item"].name,
+                "price": int(item["item"].price * 100),
+                "unitQty": int(item["quantity"]) * 1000
+            })
+        merchant_id = request.session.get("merchant_id")
+        access_token = request.session.get("access_token")
+
+        if merchant_id and access_token and line_items:
+            headers = {
+                "Authorization": f"Bearer {access_token}",
+                "Content-Type": "application/json"
+            }
+            order_url = f"{settings.CLOVER_BASE_URL}/v3/merchants/{merchant_id}/orders"
+            create_order_body = {"state": "OPEN"}
+            order_resp = requests.post(order_url, json=create_order_body, headers=headers, timeout=10)
+
+            if order_resp.status_code in (200, 201):
+                clover_order = order_resp.json()
+                clover_order_id = clover_order.get("id")
+
+                if clover_order_id:
+                    line_items_url = f"{settings.CLOVER_BASE_URL}/v3/merchants/{merchant_id}/orders/{clover_order_id}/line_items"
+                    for li in line_items:
+                        print("Posting Clover line item:", li)
+                        li_resp = requests.post(line_items_url, json=li, headers=headers, timeout=10)
+                        if li_resp.status_code not in (200, 201):
+                            print("Clover line item error:", li_resp.text)
+                        else:
+                            print("Clover line item created:", li_resp.json())
+                    print("Clover order created:", clover_order)
+                else:
+                    print("Clover API error: missing order id in response", clover_order)
+            else:
+                print("Clover API error:", order_resp.text)
 
         cart.clear()
         messages.success(request, f"Your Order No. {order.id} is Placed successfully!")
