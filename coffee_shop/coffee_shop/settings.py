@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'menu',
     'discounts',
     'core',
+    'clover_integration',
 ]
 
 MIDDLEWARE = [
@@ -98,6 +99,17 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://bb2e5e326197.ngrok-free.app",  # must include https://
+]
+
+
+CLOVER_APP_ID = os.getenv("CLOVER_APP_ID", "NBPYR5R9H3NN2")
+CLOVER_APP_SECRET = os.getenv("CLOVER_APP_SECRET", "36b99427-7d11-5d1f-4782-e5a20ca1925e")
+CLOVER_BASE_URL = "https://apisandbox.dev.clover.com"
+CLOVER_REDIRECT_URI = "https://bb2e5e326197.ngrok-free.app/clover/callback/"
 
 
 # Password validation

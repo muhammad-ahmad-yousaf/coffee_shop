@@ -30,6 +30,8 @@ from orders.views import (
     PlaceOrderView,
     OrderHistoryView,
 )
+from django.urls import path, include
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -46,6 +48,9 @@ urlpatterns = [
     path("cart/apply-discount/<int:discount_id>/", ApplyDiscountView.as_view(), name="apply-discount"),
     path("order/place/", PlaceOrderView.as_view(), name="place-order"),
     path("orders/history/", OrderHistoryView.as_view(), name="order-history"),
+
+    path("clover/", include("clover_integration.urls")),
+
 
 ]
 
